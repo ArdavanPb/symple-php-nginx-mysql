@@ -1,16 +1,20 @@
 version: '3'
 services:
   app:
-    image: php:7.1.11-fpm-alpine
+    build: ./app
+    restart: always
     volumes:
-      - './volumes/app:/var/www/html'
+      - type: bind
+        source: ./volumes/app
+        target: /var/www/html
   nginx:
-    image: nginx:alpine
+    build: ./nginx
     ports:
       - 8080:80
     volumes:
-      - './volumes/app:/var/www/html'
-      -  './volumes/nginx:/etc/nginx/conf.d'
+      - type: bind
+        source: ./volumes/app
+        target: /var/www/html
   db:
     image: mysql:5.7
     restart: always
